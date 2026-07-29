@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ipynb_checkpoints/
+
+# Environments
+.venv/
+venv/
+env/
+
+# Data (fetch via Kaggle; keep repo light)
+data/*.csv
+!data/.gitkeep
+
+# OS / editor
+.DS_Store
+.vscode/
+.idea/
