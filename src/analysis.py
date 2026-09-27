@@ -54,6 +54,7 @@ def duration_summary(df: pd.DataFrame) -> pd.DataFrame:
         }
     )
 
+
 def release_year_trend(df: pd.DataFrame) -> pd.DataFrame:
     out = df.groupby(["release_year", "type"]).size().reset_index(name="count")
     return out.sort_values("release_year")
