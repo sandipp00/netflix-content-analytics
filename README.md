@@ -1,12 +1,9 @@
 # 🎬 Netflix Content Analytics
 
-Exploratory data analysis and an interactive dashboard for the Netflix
-content catalog — content type mix, release/add trends, top countries and
-genres, ratings, duration, and directors.
+Exploratory data analysis and an interactive dashboard for the Netflix content catalog. The project analyzes content type, catalog growth, release years, countries, genres, ratings, duration, and directors using the Netflix Movies and TV Shows dataset.
 
-Built as a data science portfolio project: a reusable analysis layer
-(`src/`), a full EDA notebook, and a Streamlit dashboard on top of the same
-code, so nothing is written twice.
+Built as a data analyst portfolio project with a reusable analysis layer (`src/`), a full EDA notebook, and a Streamlit dashboard sharing the same analysis functions.
+
 
 ## Features
 
@@ -46,12 +43,23 @@ netflix-content-analytics/
 
 ## Getting started
 
-```bash
-git clone <your-fork-url>
+### Windows PowerShell
+
+```powershell
+git clone https://github.com/sandipp00/netflix-content-analytics.git
 cd netflix-content-analytics
-python -m venv .venv && source .venv/bin/activate
-pip install -r requirements.txt
-```
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+python -m pip install -r requirements.txt
+
+### macOS / Linux
+
+```bash
+git clone https://github.com/sandipp00/netflix-content-analytics.git
+cd netflix-content-analytics
+python -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
 
 ### Run the dashboard
 
