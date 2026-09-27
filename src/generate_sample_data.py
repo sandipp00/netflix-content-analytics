@@ -50,7 +50,9 @@ RATINGS_SHOW = ["TV-Y", "TV-Y7", "TV-G", "TV-PG", "TV-14", "TV-MA"]
 def _random_duration(content_type, rng):
     if content_type == "Movie":
         return f"{rng.randint(70, 180)} min"
-    return f"{rng.randint(1, 9)} Season{'s' if rng.randint(1, 9) > 1 else ''}"
+
+    seasons = rng.randint(1, 9)
+    return f"{seasons} Season{'s' if seasons > 1 else ''}"
 
 
 def _random_date_added(release_year, rng):
