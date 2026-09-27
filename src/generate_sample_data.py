@@ -58,7 +58,7 @@ def _random_date_added(release_year, rng):
     month = rng.randint(1, 12)
     day = rng.randint(1, 28)
     d = date(year, month, day)
-    return d.strftime("%B %-d, %Y") if hasattr(d, "strftime") else str(d)
+    return f"{d.strftime('%B')} {d.day}, {d.year}"
 
 
 def generate_sample_dataframe(n_rows: int = 600, seed: int = 42) -> pd.DataFrame:
