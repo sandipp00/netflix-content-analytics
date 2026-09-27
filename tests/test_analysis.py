@@ -48,3 +48,19 @@ def test_kpi_summary_matches_counts(df):
     kpis = analysis.kpi_summary(df)
     assert kpis["total_titles"] == len(df)
     assert kpis["movies"] + kpis["tv_shows"] == kpis["total_titles"]
+
+
+def test_release_year_trend(df):
+    result = analysis.release_year_trend(df)
+
+    assert set(result["type"]) <= {"Movie", "TV Show"}
+    assert (result["count"] > 0).all()
+    assert result["release_year"].is_monotonic_increasing
+
+
+def test_top_directors_excludes_unknown(df):
+    result = analysis.top_directors(df, n=5)
+
+    assert "Unknown" not in result["director"].values
+    assert len(result) <= 5
+    assert (result["count"] > 0).all()
