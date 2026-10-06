@@ -110,16 +110,19 @@ The EDA was run against the real Kaggle dataset containing **8,807 titles**. The
 
 The Streamlit dashboard provides interactive filtering by content type, release year, and country, with KPI cards and eight analytical views.
 
-**Live demo:** deployment pending — see the deployment instructions below.
+**Live demo:** [Netflix Content Analytics on Streamlit](https://netflix-content-analytics-gvhhhww7ij8tx8tmzhhowc.streamlit.app/)
 
 ### Dashboard screenshots
 
-Add the following screenshots after deploying the dashboard:
+**Dashboard overview**
 
-- `docs/dashboard-overview.png` — full dashboard with default filters.
-- `docs/dashboard-filters.png` — filtered view showing the interactive controls.
+![Netflix dashboard overview](docs/dashboard-overview.webp)
 
-The README intentionally does not use generated/mock screenshots; portfolio screenshots should come from the running application.
+**Interactive filters**
+
+![Netflix dashboard filters](docs/dashboard-filters.webp)
+
+The screenshots above were captured from the deployed Streamlit application and show both the default dashboard and an interactive filtered view.
 
 ## Deploy with Streamlit Community Cloud
 
@@ -130,7 +133,6 @@ The README intentionally does not use generated/mock screenshots; portfolio scre
 5. Add the resulting public URL to the **Live demo** line above.
 
 The repository is already structured for deployment: dependencies are declared in `requirements.txt`, the app falls back to deterministic sample data when the real CSV is absent, and no secrets are required.
-
 
 ## Tech stack
 
