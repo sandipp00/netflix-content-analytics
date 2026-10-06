@@ -66,13 +66,16 @@ def top_directors(df: pd.DataFrame, n: int = 10) -> pd.DataFrame:
 
 
 def kpi_summary(df: pd.DataFrame) -> dict:
+    if df.empty:
+        years_covered = 0
+    else:
+        years_covered = int(df["release_year"].max() - df["release_year"].min() + 1)
+
     return {
         "total_titles": int(len(df)),
         "movies": int((df["type"] == "Movie").sum()),
         "tv_shows": int((df["type"] == "TV Show").sum()),
         "countries": int(df.explode("country_list")["country_list"].nunique()),
         "genres": int(df.explode("genre_list")["genre_list"].nunique()),
-        "years_covered": int(df["release_year"].max() - df["release_year"].min())
-        if len(df)
-        else 0,
+        "years_covered": years_covered,
     }
