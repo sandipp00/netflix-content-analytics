@@ -19,7 +19,8 @@ def test_content_type_counts(df):
 def test_titles_added_per_year(df):
     result = analysis.titles_added_per_year(df)
     assert (result["count"] > 0).all()
-    assert result["year_added"].is_monotonic_increasing or result["year_added"].duplicated().any()
+    assert result["year_added"].is_monotonic_increasing
+    assert result[["year_added", "type"]].duplicated().sum() == 0
 
 
 def test_top_countries_excludes_unknown(df):
@@ -48,6 +49,9 @@ def test_kpi_summary_matches_counts(df):
     kpis = analysis.kpi_summary(df)
     assert kpis["total_titles"] == len(df)
     assert kpis["movies"] + kpis["tv_shows"] == kpis["total_titles"]
+    assert kpis["years_covered"] == (
+        df["release_year"].max() - df["release_year"].min() + 1
+    )
 
 
 def test_release_year_trend(df):
