@@ -179,11 +179,11 @@ The Streamlit dashboard provides interactive filtering by content type, release 
 
 **Dashboard overview**
 
-![Netflix dashboard overview](docs/dashboard-overview.webp)
+![Netflix dashboard overview](https://raw.githubusercontent.com/sandipp00/netflix-content-analytics/master/docs/dashboard-overview.webp)
 
 **Interactive filters**
 
-![Netflix dashboard filters](docs/dashboard-filters.webp)
+![Netflix dashboard filters](https://raw.githubusercontent.com/sandipp00/netflix-content-analytics/master/docs/dashboard-filters.webp)
 
 The screenshots above were captured from the deployed Streamlit application and show both the default dashboard and an interactive filtered view.
 
