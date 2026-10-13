@@ -8,7 +8,7 @@ Built as a data analyst portfolio project with a reusable analysis layer (`src/`
 
 - **Reusable analysis module** (`src/analysis.py`) — pandas functions for every chart, unit-tested and shared between the notebook and the dashboard.
 - **EDA notebook** (`notebooks/01_eda.ipynb`) — cleaning, missing-value audit, and a full walkthrough with commentary.
-- **Interactive dashboard** (`app.py`) — Streamlit + Plotly, with filters for content type, release year range, and country, plus KPI tiles and 8 charts.
+- **Interactive dashboard** (`app.py`) — Streamlit + Plotly, with filters for content type, release year range, and country, plus KPI tiles, 7 interactive charts, and a duration summary table.
 - **SQL analysis** (`sql/`) — five SQLite queries answering business questions about content type, country entries, genres, release trends, and directors.
 - **Works without a Kaggle account** — if the real dataset isn't present, a synthetic sample with the same schema is generated automatically (`src/generate_sample_data.py`), so `git clone && run` works immediately. The SQLite import step requires the real CSV.
 - **Tested** — `pytest` suite covering data cleaning, analysis functions, and execution of SQL queries; GitHub Actions CI runs the repository's configured tests on every push/PR.
@@ -171,7 +171,7 @@ The EDA was run against the real Kaggle dataset containing **8,807 titles**. The
 
 ## Dashboard
 
-The Streamlit dashboard provides interactive filtering by content type, release year, and country, with KPI cards and eight analytical views.
+The Streamlit dashboard provides interactive filtering by content type, release year, and country, with KPI cards, seven charts, and a duration summary table.
 
 **Live demo:** [Netflix Content Analytics on Streamlit](https://netflix-content-analytics-gvhhhww7ij8tx8tmzhhowc.streamlit.app/)
 
