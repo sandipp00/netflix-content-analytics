@@ -18,3 +18,9 @@ data/*.csv
 .DS_Store
 .vscode/
 .idea/
+
+# Local SQLite databases and generated outputs
+*.db
+*.sqlite
+*.sqlite3
+outputs/
