@@ -113,6 +113,10 @@ The project includes a small SQL analysis layer alongside the Python EDA and das
 | `sql/03_genre_analysis.sql` | Most frequently listed genres |
 | `sql/04_release_trends.sql` | Release-year trends by content type |
 | `sql/05_advanced_analysis.sql` | Directors with the most titles |
+| `sql/06_genre_ranking.sql` | Genre ranking analysis |
+| `sql/07_year_over_year_growth.sql` | Year-over-year growth analysis |
+| `sql/08_director_rankings.sql` | Director ranking analysis |
+
 
 ### Build the local database
 
@@ -130,7 +134,7 @@ Run the SQL query tests with:
 python -m pytest tests/test_sql_queries.py -v
 ```
 
-The tests check that each SQL file exists, executes against the local database, and returns rows. They are skipped when the local SQLite database is unavailable.
+The SQL tests create a temporary SQLite database populated with synthetic fixture records. They verify that all eight SQL files exist, execute successfully, and return results without requiring the real dataset or a local database.
 
 ## Dataset
 
