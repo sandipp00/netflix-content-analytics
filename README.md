@@ -2,15 +2,16 @@
 
 Exploratory data analysis and an interactive dashboard for the Netflix content catalog. The project analyzes content type, catalog growth, release years, countries, genres, ratings, duration, and directors using the Netflix Movies and TV Shows dataset.
 
-Built as a data analyst portfolio project with a reusable analysis layer (`src/`), a full EDA notebook, and a Streamlit dashboard sharing the same analysis functions.
+Built as a data analyst portfolio project with a reusable analysis layer (`src/`), a full EDA notebook, SQL analysis with SQLite, and a Streamlit dashboard sharing the same analysis functions.
 
 ## Features
 
 - **Reusable analysis module** (`src/analysis.py`) — pandas functions for every chart, unit-tested and shared between the notebook and the dashboard.
 - **EDA notebook** (`notebooks/01_eda.ipynb`) — cleaning, missing-value audit, and a full walkthrough with commentary.
 - **Interactive dashboard** (`app.py`) — Streamlit + Plotly, with filters for content type, release year range, and country, plus KPI tiles and 8 charts.
-- **Works without a Kaggle account** — if the real dataset isn't present, a synthetic sample with the same schema is generated automatically (`src/generate_sample_data.py`), so `git clone && run` works immediately.
-- **Tested** — `pytest` suite covering data cleaning and every analysis function; GitHub Actions CI runs it on every push/PR.
+- **SQL analysis** (`sql/`) — five SQLite queries answering business questions about content type, country entries, genres, release trends, and directors.
+- **Works without a Kaggle account** — if the real dataset isn't present, a synthetic sample with the same schema is generated automatically (`src/generate_sample_data.py`), so `git clone && run` works immediately. The SQLite import step requires the real CSV.
+- **Tested** — `pytest` suite covering data cleaning, analysis functions, and execution of SQL queries; GitHub Actions CI runs the repository's configured tests on every push/PR.
 
 ## Project structure
 
@@ -20,15 +21,24 @@ netflix-content-analytics/
 ├── data/
 │   ├── README.md              # How to get the real Kaggle dataset
 │   └── netflix_titles.csv     # (not committed — see data/README.md)
+├── database/
+│   └── import_csv_to_sqlite.py # Import the CSV into a local SQLite database
+├── sql/
+│   ├── 01_content_overview.sql
+│   ├── 02_country_analysis.sql
+│   ├── 03_genre_analysis.sql
+│   ├── 04_release_trends.sql
+│   └── 05_advanced_analysis.sql
 ├── notebooks/
 │   └── 01_eda.ipynb           # Full exploratory analysis
 ├── src/
 │   ├── data_loader.py         # Load + clean the dataset
-│   ├── generate_sample_data.py# Synthetic fallback dataset
+│   ├── generate_sample_data.py # Synthetic fallback dataset
 │   └── analysis.py            # Chart-ready aggregation functions
 ├── tests/
 │   ├── test_data_loader.py
-│   └── test_analysis.py
+│   ├── test_analysis.py
+│   └── test_sql_queries.py    # SQL execution tests
 ├── .github/workflows/ci.yml   # CI: install deps + run pytest
 ├── requirements.txt
 └── LICENSE
@@ -71,19 +81,68 @@ jupyter notebook notebooks/01_eda.ipynb
 ### Run the tests
 
 ```bash
-pytest -v
+python -m pytest -v
 ```
+
+## SQL analysis with SQLite
+
+The project includes a small SQL analysis layer alongside the Python EDA and dashboard. The queries use the local SQLite table `netflix_titles` to answer practical catalog questions.
+
+### Business questions
+
+- What is the distribution of Movies and TV Shows?
+- Which country entries are most common in the dataset?
+- Which genres are most frequently listed?
+- How does the release-year mix differ between Movies and TV Shows?
+- Which directors have the most titles?
+
+### SQL concepts demonstrated
+
+- Aggregation with `COUNT()` and `GROUP BY`
+- Handling missing values with `COALESCE()` and `NULLIF()`
+- Common Table Expressions (CTEs), including a recursive CTE to split genre values
+- Filtering and sorting with `WHERE`, `ORDER BY`, and `LIMIT`
+- Query execution tests with `pytest`
+
+### Query files
+
+| File | Purpose |
+|---|---|
+| `sql/01_content_overview.sql` | Movie vs. TV Show distribution |
+| `sql/02_country_analysis.sql` | Most common country field values |
+| `sql/03_genre_analysis.sql` | Most frequently listed genres |
+| `sql/04_release_trends.sql` | Release-year trends by content type |
+| `sql/05_advanced_analysis.sql` | Directors with the most titles |
+
+### Build the local database
+
+Download the real `netflix_titles.csv` dataset and place it in the `data/` folder as described in [`data/README.md`](data/README.md). From the repository root, run:
+
+```powershell
+python database/import_csv_to_sqlite.py
+```
+
+This creates `database/netflix.db` locally. Database files and generated outputs are excluded from Git; the source CSV is also not committed. The SQL import requires the real CSV, and its results should not be interpreted as real-world insights if you substitute synthetic data.
+
+Run the SQL query tests with:
+
+```powershell
+python -m pytest tests/test_sql_queries.py -v
+```
+
+The tests check that each SQL file exists, executes against the local database, and returns rows. They are skipped when the local SQLite database is unavailable.
 
 ## Dataset
 
 This project is built around the Kaggle [**Netflix Movies and TV Shows**](https://www.kaggle.com/datasets/shivamb/netflix-shows) dataset (`netflix_titles.csv`: title, type, director, cast, country, date added, release year, rating, duration, genres, description).
 
-See [`data/README.md`](data/README.md) for how to download it. Without it, every entry point falls back to a generated sample dataset with identical structure — convenient for development, but not a substitute for the real data when drawing conclusions.
+See [`data/README.md`](data/README.md) for how to download it. Without it, the Python dashboard and EDA entry points can fall back to generated sample data with identical structure — convenient for development, but not a substitute for the real data when drawing conclusions. The SQLite import script expects the real CSV at `data/netflix_titles.csv`.
 
 ## What this project demonstrates
 
 - **Data cleaning:** missing-value handling, date parsing, multi-value field normalization, and duration feature extraction.
 - **Exploratory analysis:** content mix, catalog growth, release trends, ratings, countries, genres, and directors.
+- **SQL analysis:** SQLite queries using aggregation, CTEs, recursive splitting, filtering, and sorting.
 - **Dashboarding:** interactive filtering with Streamlit and Plotly.
 - **Software quality:** reusable analysis functions, deterministic test data, pytest coverage, and GitHub Actions CI.
 - **Reproducibility:** the project runs without committing the Kaggle dataset and clearly separates synthetic fallback data from real-data analysis.
@@ -136,7 +195,7 @@ The repository is already structured for deployment: dependencies are declared i
 
 ## Tech stack
 
-Python · pandas · Streamlit · Plotly · Matplotlib/Seaborn · pytest · GitHub Actions
+Python · pandas · SQLite · Streamlit · Plotly · Matplotlib/Seaborn · pytest · GitHub Actions
 
 ## License
 
