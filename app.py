@@ -8,8 +8,10 @@ import plotly.express as px
 import plotly.graph_objects as go
 import streamlit as st
 
+from pathlib import Path
+
 from src import analysis
-from src.data_loader import load_clean
+from src.data_loader import DEFAULT_DATA_PATH, load_clean
 
 # Categorical palette slots (validated for CVD-safe adjacent contrast, see
 # dataviz skill references/palette.md). Fixed order, assigned by entity.
@@ -28,27 +30,50 @@ def get_data() -> pd.DataFrame:
     return load_clean()
 
 
+
 def apply_chart_theme(fig: go.Figure) -> go.Figure:
     fig.update_layout(
-        plot_bgcolor="#fcfcfb",
-        paper_bgcolor="#fcfcfb",
-        font_color="#0b0b0b",
+        template="plotly_white",
+        plot_bgcolor="#ffffff",
+        paper_bgcolor="#ffffff",
+        font=dict(color="#222222"),
+        legend=dict(
+            font=dict(color="#222222"),
+            bgcolor="rgba(255,255,255,0.8)",
+        ),
         legend_title_text="",
         margin=dict(l=10, r=10, t=40, b=10),
     )
-    fig.update_xaxes(gridcolor="#e1e0d9", linecolor="#c3c2b7")
-    fig.update_yaxes(gridcolor="#e1e0d9", linecolor="#c3c2b7")
+    fig.update_xaxes(
+        gridcolor="#e1e0d9",
+        linecolor="#c3c2b7",
+        tickfont=dict(color="#444444"),
+        title_font=dict(color="#222222"),
+    )
+    fig.update_yaxes(
+        gridcolor="#e1e0d9",
+        linecolor="#c3c2b7",
+        tickfont=dict(color="#444444"),
+        title_font=dict(color="#222222"),
+    )
     return fig
+
 
 
 df = get_data()
 
 st.title("🎬 Netflix Content Analytics")
 st.caption(
-    "Exploring the Netflix content catalog — release trends, genres, "
-    "countries, and ratings. Dataset: Kaggle *Netflix Movies and TV Shows* "
-    "(or a generated sample if the CSV isn't present)."
+    "Explore content types, release trends, genres, countries, and ratings."
 )
+
+if Path(DEFAULT_DATA_PATH).is_file():
+    st.success("Data source: Real Netflix titles dataset (Kaggle CSV).")
+else:
+    st.warning(
+        "DEMO MODE: Using synthetic sample data. "
+        "Charts and KPIs do not represent actual Netflix catalog statistics."
+    )
 
 # ---- Sidebar filters ----
 st.sidebar.header("Filters")
