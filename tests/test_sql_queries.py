@@ -30,7 +30,10 @@ def connection():
         "03_genre_analysis.sql",
         "04_release_trends.sql",
         "05_advanced_analysis.sql",
-    ],
+        "06_genre_ranking.sql",
+        "07_year_over_year_growth.sql",
+        "08_director_rankings.sql",
+    ]
 )
 def test_sql_query_executes(connection, sql_file):
     query_path = SQL_DIR / sql_file
