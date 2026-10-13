@@ -8,7 +8,7 @@ import pandas as pd
 
 from src.data_loader import clean
 from src.generate_sample_data import generate_sample_dataframe
-
+from src.data_quality import validate_titles
 
 def test_sample_ids_are_unique():
     raw = generate_sample_dataframe(n_rows=500, seed=42)
@@ -59,3 +59,65 @@ def test_cleaning_is_deterministic():
     second = clean(raw)
 
     pd.testing.assert_frame_equal(first, second)
+
+
+
+def test_duplicate_ids_are_reported():
+    df = pd.DataFrame({
+        "show_id": ["s1", "s1"],
+        "type": ["Movie", "Movie"],
+        "title": ["Film A", "Film B"],
+        "release_year": [2020, 2021],
+    })
+
+    result = validate_titles(df)
+
+    assert result["duplicate_show_id_rows"] == 2
+
+
+def test_missing_required_fields_are_reported():
+    df = pd.DataFrame({
+        "show_id": ["s1", "s2"],
+        "type": ["Movie", "TV Show"],
+        "title": ["Film A", " "],
+        "release_year": [2020, 2021],
+    })
+
+    result = validate_titles(df)
+
+    assert result["missing_required_fields"]["title"] == 1
+
+
+def test_invalid_content_types_are_reported():
+    df = pd.DataFrame({
+        "show_id": ["s1"],
+        "type": ["Series"],
+        "title": ["Example"],
+        "release_year": [2020],
+    })
+
+    assert validate_titles(df)["invalid_content_types"] == 1
+
+
+def test_invalid_release_years_are_reported():
+    df = pd.DataFrame({
+        "show_id": ["s1", "s2", "s3"],
+        "type": ["Movie", "Movie", "Movie"],
+        "title": ["Film A", "Film B", "Film C"],
+        "release_year": [1800, "unknown", 2020],
+    })
+
+    assert validate_titles(df)["invalid_release_years"] == 2
+
+
+def test_missing_required_column_raises_error():
+    import pytest
+
+    df = pd.DataFrame({
+        "show_id": ["s1"],
+        "type": ["Movie"],
+        "title": ["Film A"],
+    })
+
+    with pytest.raises(ValueError, match="Missing required columns"):
+        validate_titles(df)
